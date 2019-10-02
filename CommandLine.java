@@ -32,7 +32,7 @@ class CommandLine {
     return -1;
   }
 
-  public int getUserInput(String prompt) {
+  public int getUserInput() {
     int commandInput;
     do {
         System.out.print("[" + commandPrompt + "]: ");
