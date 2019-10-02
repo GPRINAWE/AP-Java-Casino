@@ -1,15 +1,15 @@
 import java.util.Scanner;
 
 class CommandLine {
-  private commandList;
-  private commandPrompt;
+  private String[] commandList;
+  private String commandPrompt;
 
   public CommandLine(String[] cmdList) {
     commandList = cmdList;
-    commandPrompt = "INPUT";
+    commandPrompt = "[INPUT]: ";
   }
 
-  public CommandLine(String[] cmdList, String cmdPrompt) {
+  public CommandLine(String cmdPrompt, String[] cmdList) {
     commandList = cmdList;
     commandPrompt = cmdPrompt;
   }
@@ -32,10 +32,10 @@ class CommandLine {
     return -1;
   }
 
-  public int getUserInput() {
+  public int getUserInput(Scanner scanner) {
     int commandInput;
     do {
-        System.out.print("[" + commandPrompt + "]: ");
+        System.out.print(commandPrompt);
         String input = scanner.nextLine().replaceAll("[^A-Za-z]","");
         commandInput = CommandLine.stringArrayIndexOfIgnoreCase(commandList, input);
     } while (commandInput == -1);
