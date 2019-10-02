@@ -23,7 +23,7 @@ class CommandLine {
    * @param  target  Any string
    * @return  the index of target in array or -1
    */
-  public static int stringArrayIndexOfIgnoreCase(String[] array,String target) {
+  public static int stringArrayIndexOfIgnoreCase(String[] array, String target) {
     for (int i = 0; i < array.length; i++) {
       if (array[i].equalsIgnoreCase(target)) {
         return i;
@@ -36,7 +36,7 @@ class CommandLine {
     int commandInput;
     do {
         System.out.print(commandPrompt);
-        String input = scanner.nextLine().replaceAll("[^A-Za-z]","");
+        String input = scanner.nextLine().replaceAll("[^A-Za-z]", "");
         commandInput = CommandLine.stringArrayIndexOfIgnoreCase(commandList, input);
     } while (commandInput == -1);
     return commandInput;
