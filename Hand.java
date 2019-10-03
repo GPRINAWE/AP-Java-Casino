@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class Hand {
+public class Hand {
   private ArrayList cards;
   private String gameType;
 
@@ -30,7 +30,7 @@ class Hand {
     cards.addAll(cardsToAdd);
   }
 
-  public int getHandValue(String gameType) {
+  public int getHandValue() {
     switch (gameType) {
       case "blackjack":
         int[] pipValMap = new int[] {11,2,3,4,5,6,7,8,9,10,10,10,10};
