@@ -59,6 +59,7 @@ class Hand {
         return totalVal;
       default: //gameType not recognized
         return -1;
+    }
   }
 
   public String toString() {
