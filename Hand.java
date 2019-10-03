@@ -2,13 +2,16 @@ import java.util.ArrayList;
 
 class Hand {
   private ArrayList cards;
+  private String gameType;
 
-  public Hand() {
+  public Hand(String type) {
     cards = new ArrayList();
+    gameType = type.toLowerCase();
   }
 
-  public Hand(ArrayList c) {
+  public Hand(String type, ArrayList c) {
     cards = new ArrayList(c);
+    gameType = type.toLowerCase();
   }
 
   public Card getCard(int index) {
@@ -28,10 +31,9 @@ class Hand {
   }
 
   public int getHandValue(String gameType) {
-    int[] pipValMap;
-    switch (gameType.toLowerCase()) {
-      case 'blackjack':
-        pipValMap = new int[] {11,2,3,4,5,6,7,8,9,10,10,10,10};
+    switch (gameType) {
+      case "blackjack":
+        int[] pipValMap = new int[] {11,2,3,4,5,6,7,8,9,10,10,10,10};
         
         int totalVal = 0;
         int aceCount = 0;
@@ -55,6 +57,8 @@ class Hand {
           acesLeft--;
         }
         return totalVal;
+      default: //gameType not recognized
+        return -1;
   }
 
   public String toString() {
