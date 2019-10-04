@@ -36,7 +36,7 @@ class CommandLine {
     int commandInput;
     do {
         System.out.print(commandPrompt);
-        String input = scanner.nextLine().replaceAll("[^A-Za-z]", "");
+        String input = scanner.nextLine().replaceAll("[^A-Za-z0-9]", "");
         commandInput = CommandLine.stringArrayIndexOfIgnoreCase(commandList, input);
     } while (commandInput == -1);
     return commandInput;
