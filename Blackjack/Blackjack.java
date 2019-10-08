@@ -40,7 +40,7 @@ public class Blackjack {
   }
 
   public static void printHand(String name, Hand hand) {
-    System.out.println(name + "cards: " + hand.toString());
+    System.out.println(name + " cards: " + hand.toString());
   }
 
   private void drawCard(String name, Hand hand) {
@@ -82,7 +82,6 @@ public class Blackjack {
 
       switch (actionInput) {
         case 0: //Hit another card
-          Card newCard = deck.draw();
           drawCard("Player", playerHand);
           //System.out.println("Hand value: " + playerHand.getHandValue());
           if (playerHand.getHandValue() > 21) {
@@ -111,6 +110,7 @@ public class Blackjack {
     Blackjack.printHand("Dealer", dealerHand);
     //System.out.println("Hand value: " + dealerHand.getHandValue());
     while(dealerHand.getHandValue() < 17) {
+      Input.waitForEnter(scanner);
       System.out.println("-");
       drawCard("Dealer", dealerHand);
       //System.out.println("Hand value: " + dealerHand.getHandValue());
