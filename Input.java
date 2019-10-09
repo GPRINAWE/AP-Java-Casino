@@ -23,7 +23,7 @@ public class Input {
     return Input.getUserInput(scanner, prompt, "[^A-Za-z]");
   }
 
-  public static int getDigits(Scanner scanner, String prompt) {
-    return Integer.parseInt(Input.getUserInput(scanner, prompt, "[^0-9]"));
+  public static int getInt(Scanner scanner, String prompt) {
+    return Integer.parseInt(Input.getUserInput(scanner, prompt, "[^-0-9]"));
   }
 }
