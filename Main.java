@@ -1,35 +1,38 @@
 import java.util.Scanner;
+
 import java.util.Locale;
 import java.text.NumberFormat;
 
 public class Main {
-  public static Scanner scanner = new Scanner(System.in);
+  public static Locale locale = new Locale("en", "US");      
+  public static NumberFormat moneyFormatter = NumberFormat.getCurrencyInstance(locale);
 
   public static String moneyFormat(double moneyNum) {
-    Locale locale = new Locale("en", "US");      
-    NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-    return currencyFormatter.format(moneyNum);
+    return moneyFormatter.format(moneyNum);
   }
 
-  public static double getUserBet() {
-    double input;
+  public static double getUserBet(Scanner scanner) {
+    int input;
     do {
-      input = (double)Input.getInt(scanner, "Bet: ");
+      input = Input.getInt(scanner, "Bet: ");
     } while (input <= 0);
-    return input;
+    return (double)input;
   }
 
   public static void main(String[] args) {
-    System.out.println("\n<Casino>\n");
+    Scanner scanner = new Scanner(System.in);
 
-    /*
-     * 0 - START - Starts the game with default settings
-     * 1 - EXIT - Closes the program
-     */
     CommandLine cmdLn = new CommandLine(
       "[START/EXIT]: ",
-      new String[] {"START","EXIT"}
+      new String[] {"start","exit"}
     );
+
+    CommandLine gameCmdLn = new CommandLine(
+      "Casino (Blackjack,Leave): ",
+      new String[] {"blackjack","leave"}
+    );
+
+    System.out.println("\n<Casino>\n");
 
     int commandInput;
     do {
@@ -37,17 +40,45 @@ public class Main {
       commandInput = cmdLn.getUserInput(scanner);
 
       switch (commandInput) {
-        case 0: //Game start
+        case 0: //Casino start
           System.out.println("----------");
-          Blackjack blackjack = new Blackjack(scanner);
-          double bet = getUserBet();
-          System.out.println("You bet " + moneyFormat(bet));
-          double winnings = blackjack.play(bet);
-          System.out.println("Winnings: " + moneyFormat(winnings));
+
+          double money = 100.0;
+          System.out.println("Money: " + moneyFormat(money));
+
+          int gameInput;
+          do {
+
+            gameInput = gameCmdLn.getUserInput(scanner);
+
+            switch(gameInput) {
+              case 0: //Blackjack
+                System.out.println("-----");
+
+                double bet;
+                bet = getUserBet(scanner);
+                System.out.println("You bet " + moneyFormat(bet));
+                Blackjack blackjack = new Blackjack(scanner);
+
+                double winnings = blackjack.play(bet);
+                System.out.println("Winnings: " + moneyFormat(winnings));
+                money += winnings;
+                System.out.println("Money: " + moneyFormat(money));
+
+                System.out.println("-----");
+                break;
+              case 1: //Leave
+                break;
+              default: //Error handling
+                System.out.println("ERROR: Invalid Command Code");
+                System.out.close();
+            }
+
+          } while (gameInput != 1);
+
           System.out.println("----------");
           break;
-        case 1: //System exit message
-          System.out.println("\n</Casino>\n");
+        case 1: //Exit
           break;
         default: //Error handling
           System.out.println("ERROR: Invalid Command Code");
@@ -55,6 +86,8 @@ public class Main {
       }
 
     } while(commandInput != 1);
+
+    System.out.println("\n</Casino>\n");
     scanner.close();
   }
 }
