@@ -53,9 +53,9 @@ public class Blackjack {
 
   public double play(double bet) {
     System.out.println("Dealer cards: [" + dealerHand.getCard(0) + ",??]");
-    
+
     System.out.println("Player cards: " + playerHand.toString());
-    System.out.println("Hand Value: " + playerHand.getHandValue());
+    //System.out.println("Hand Value: " + playerHand.getHandValue());
 
     if (playerHand.getHandValue() == 21) {
       System.out.println();
@@ -63,13 +63,9 @@ public class Blackjack {
       return Blackjack.winnings(bet);
     }
 
-    /*
-    * 0 - Hit
-    * 1 - Stay
-    */
     CommandLine actionCmdLn = new CommandLine(
       "Action (Hit,Stand): ",
-      new String[] {"Hit","Stand"}
+      new String[] {"hit","stand"}
     );
 
     int actionInput;
