@@ -15,12 +15,10 @@ class Card {
     return value;
   }
 
-  public String toString() {
-    String str = "";
+  public char valueChar() {
     switch(value){
       case 1: //Ace
-        str += "A";
-        break;
+        return 'A';
       case 2:
       case 3:
       case 4:
@@ -30,37 +28,34 @@ class Card {
       case 8:
       case 9:
       case 10: //Numbers 2 to 10
-        str += value;
-        break;
+        return Character.forDigit(value, 10);
       case 11: //Jack
-        str += "J";
-        break;
+        return 'J';
       case 12: //Queen
-        str += "Q";
-        break;
+        return 'Q';
       case 13: //King
-        str += "K";
-        break;
+        return 'K';
       default: //Error
-        str += "?";
+        return '?';
     }
+  }
+
+  public char suitChar() {
     switch(suit) {
       case 1: //Clubs
-        str += "C";
-        break;
+        return 'C';
       case 2: //Spades
-        str += "S";
-        break;
+        return 'S';
       case 3: //Hearts
-        str += "H";
-        break;
+        return 'H';
       case 4: //Diamonds
-        str += "D";
-        break;
+        return 'D';
       default: //Error
-        str += "?";
+        return '?';
     }
-    
-    return str;
+  }
+
+  public String toString() {
+    return Character.toString(valueChar()) + Character.toString(suitChar());
   }
 }
