@@ -29,13 +29,17 @@ public class Blackjack {
     return bet * Blackjack.winPerWager;
   }
 
-  private static void displayWin(String msg) {
+  private void displayWin(String msg) {
+    System.out.println();
     System.out.println(msg);
+    Input.waitForEnter(scanner);
     System.out.println("Player wins!");
   }
 
-  private static void displayLoss(String msg) {
+  private void displayLoss(String msg) {
+    System.out.println();
     System.out.println(msg);
+    Input.waitForEnter(scanner);
     System.out.println("Dealer wins.");
   }
 
@@ -58,8 +62,7 @@ public class Blackjack {
     //System.out.println("Hand Value: " + playerHand.getHandValue());
 
     if (playerHand.getHandValue() == 21) {
-      System.out.println();
-      Blackjack.displayWin("Player gets a dealer blackjack.");
+      displayWin("Player gets a dealer blackjack.");
       return Blackjack.winnings(bet);
     }
 
@@ -92,17 +95,17 @@ public class Blackjack {
           System.out.close();
       }
     } while(actionInput != 1 && busted == false);
-    
-    System.out.println();
 
     //Display results
     if (busted) {
-      Blackjack.displayLoss("Player's bust.");
+      displayLoss("Player's bust.");
       return -bet;
     }
+
+    Input.waitForEnter(scanner);
+
     //Reveal hidden dealer card and hit until at hand value 17 or more
     System.out.println("Dealer reveals " + dealerHand.getCard(1));
-    System.out.println();
     Blackjack.printHand("Dealer", dealerHand);
     //System.out.println("Hand value: " + dealerHand.getHandValue());
     while(dealerHand.getHandValue() < 17) {
@@ -112,34 +115,38 @@ public class Blackjack {
       //System.out.println("Hand value: " + dealerHand.getHandValue());
     }
 
-    System.out.println();
+    if (dealerHand.getHandValue() > 21) {
+      displayWin("Dealer busts.");
+      return Blackjack.winnings(bet);
+    }
+
+    Input.waitForEnter(scanner);
 
     //Display results
     int dealerHandValue = dealerHand.getHandValue();
     int playerHandValue = playerHand.getHandValue();
 
-    if (dealerHandValue > 21) {
-      Blackjack.displayWin("Dealer busts.");
-      return Blackjack.winnings(bet);
-    }
     if (dealerHandValue == 21) {
-      Blackjack.displayLoss("Dealer's blackjack.");
+      displayLoss("Dealer's blackjack.");
       return -bet;
     }
     if (playerHandValue == 21) {
-      Blackjack.displayWin("Player's blackjack.");
+      displayWin("Player's blackjack.");
       return Blackjack.winnings(bet);
     }
+
+    Input.waitForEnter(scanner);
+
     System.out.println("Player's hand value: " + playerHandValue);
     System.out.println("Dealer's hand value: " + dealerHandValue);
-    System.out.println();
     if (playerHandValue > dealerHandValue) {
-      Blackjack.displayWin("Player has higher value.");
+      displayWin("Player has higher value.");
       return Blackjack.winnings(bet);
     } else if (playerHandValue < dealerHandValue) {
-      Blackjack.displayLoss("Dealer has higher value.");
+      displayLoss("Dealer has higher value.");
       return -bet;
     } else {
+      Input.waitForEnter(scanner);
       System.out.println("Draw.");
       return 0.0;
     }
