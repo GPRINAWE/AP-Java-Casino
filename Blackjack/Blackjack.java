@@ -55,8 +55,8 @@ public class Blackjack {
 
   public double play(double bet) {
     System.out.println("Dealer cards: [" + dealerHand.getCard(0) + ",??]");
-
     System.out.println("Player cards: " + playerHand.toString());
+    System.out.println("-");
 
     if (playerHand.getHandValue() == 21) {
       displayWin("Player gets a dealer blackjack.");
@@ -71,8 +71,6 @@ public class Blackjack {
     int actionInput;
     boolean busted = false;
     do {
-
-      System.out.println("-");
 
       actionInput = actionCmdLn.getUserInput(scanner);
 
@@ -105,7 +103,6 @@ public class Blackjack {
     Blackjack.printHand("Dealer", dealerHand);
     while(dealerHand.getHandValue() < 17) {
       Input.waitForEnter(scanner);
-      System.out.println("-");
       drawCard("Dealer", dealerHand);
     }
 
