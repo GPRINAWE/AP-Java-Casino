@@ -44,7 +44,6 @@ public class Main {
           System.out.println("----------");
 
           double money = 100.0;
-          System.out.println("Money: " + moneyFormat(money));
 
           int gameInput;
           do {
@@ -55,12 +54,24 @@ public class Main {
               case 0: //Blackjack
                 System.out.println("-----");
 
-                double bet;
-                bet = getUserBet(scanner);
-                System.out.println("You bet " + moneyFormat(bet));
-                Blackjack blackjack = new Blackjack(scanner);
+                System.out.println("Money: " + moneyFormat(money));
+                System.out.println();
 
+                double bet;
+                do {
+                  bet = getUserBet(scanner);
+                  if (money-bet < 0) {
+                    System.out.println("Not enough money.\n");
+                  }
+                } while((money-bet) < 0);
+                System.out.println("You bet " + moneyFormat(bet));
+
+                System.out.println();
+
+                Blackjack blackjack = new Blackjack(scanner);
                 double winnings = blackjack.play(bet);
+
+                Input.waitForEnter(scanner);
                 System.out.println("Winnings: " + moneyFormat(winnings));
                 money += winnings;
                 System.out.println("Money: " + moneyFormat(money));
