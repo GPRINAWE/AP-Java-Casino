@@ -32,14 +32,12 @@ public class Blackjack {
   private void displayWin(String msg) {
     System.out.println();
     System.out.println(msg);
-    Input.waitForEnter(scanner);
     System.out.println("Player wins!");
   }
 
   private void displayLoss(String msg) {
     System.out.println();
     System.out.println(msg);
-    Input.waitForEnter(scanner);
     System.out.println("Dealer wins.");
   }
 
@@ -59,7 +57,6 @@ public class Blackjack {
     System.out.println("Dealer cards: [" + dealerHand.getCard(0) + ",??]");
 
     System.out.println("Player cards: " + playerHand.toString());
-    //System.out.println("Hand Value: " + playerHand.getHandValue());
 
     if (playerHand.getHandValue() == 21) {
       displayWin("Player gets a dealer blackjack.");
@@ -82,7 +79,6 @@ public class Blackjack {
       switch (actionInput) {
         case 0: //Hit another card
           drawCard("Player", playerHand);
-          //System.out.println("Hand value: " + playerHand.getHandValue());
           if (playerHand.getHandValue() > 21) {
             busted = true;
           }
@@ -107,12 +103,10 @@ public class Blackjack {
     //Reveal hidden dealer card and hit until at hand value 17 or more
     System.out.println("Dealer reveals " + dealerHand.getCard(1));
     Blackjack.printHand("Dealer", dealerHand);
-    //System.out.println("Hand value: " + dealerHand.getHandValue());
     while(dealerHand.getHandValue() < 17) {
       Input.waitForEnter(scanner);
       System.out.println("-");
       drawCard("Dealer", dealerHand);
-      //System.out.println("Hand value: " + dealerHand.getHandValue());
     }
 
     if (dealerHand.getHandValue() > 21) {
@@ -135,8 +129,6 @@ public class Blackjack {
       return Blackjack.winnings(bet);
     }
 
-    Input.waitForEnter(scanner);
-
     System.out.println("Player's hand value: " + playerHandValue);
     System.out.println("Dealer's hand value: " + dealerHandValue);
     if (playerHandValue > dealerHandValue) {
@@ -146,7 +138,7 @@ public class Blackjack {
       displayLoss("Dealer has higher value.");
       return -bet;
     } else {
-      Input.waitForEnter(scanner);
+      System.out.println();
       System.out.println("Draw.");
       return 0.0;
     }
