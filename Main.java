@@ -28,8 +28,8 @@ public class Main {
     );
 
     CommandLine gameCmdLn = new CommandLine(
-      "Casino (Blackjack,Leave): ",
-      new String[] {"blackjack","leave"}
+      "Casino (Blackjack,Slots,Leave): ",
+      new String[] {"blackjack","slots","leave"}
     );
 
     System.out.println("\n<Casino>\n");
@@ -78,14 +78,20 @@ public class Main {
 
                 System.out.println("-----");
                 break;
-              case 1: //Leave
+              case 1: //Slots
+                System.out.println("-----");
+                Slots slots = new Slots(scanner);
+                slots.play(0.0);
+                System.out.println("-----");
+                break;
+              case 2: //Leave
                 break;
               default: //Error handling
                 System.out.println("ERROR: Invalid Command Code");
                 System.out.close();
             }
 
-          } while (gameInput != 1);
+          } while (gameInput != 2);
 
           System.out.println("----------");
           break;
