@@ -4,6 +4,11 @@ public class Blackjack {
   //Blackjack pays 3 for 2
   private static double winPerWager = 3.0/2.0;
 
+  private static CommandLine actionCmdLn = new CommandLine(
+  "Action (Hit,Stand): ",
+    new String[] {"hit","stand"}
+  );
+
   private Scanner scanner;
 
   private Deck deck;
@@ -30,13 +35,11 @@ public class Blackjack {
   }
 
   private void displayWin(String msg) {
-    System.out.println();
     System.out.println(msg);
     System.out.println("Player wins!");
   }
 
   private void displayLoss(String msg) {
-    System.out.println();
     System.out.println(msg);
     System.out.println("Dealer wins.");
   }
@@ -56,23 +59,20 @@ public class Blackjack {
   public double play(double bet) {
     System.out.println("Dealer cards: [" + dealerHand.getCard(0) + ",??]");
     System.out.println("Player cards: " + playerHand.toString());
-    System.out.println("-");
 
     if (playerHand.getHandValue() == 21) {
+      System.out.println();
       displayWin("Player gets a dealer blackjack.");
       return Blackjack.winnings(bet);
     }
-
-    CommandLine actionCmdLn = new CommandLine(
-      "Action (Hit,Stand): ",
-      new String[] {"hit","stand"}
-    );
 
     int actionInput;
     boolean busted = false;
     do {
 
-      actionInput = actionCmdLn.getUserInput(scanner);
+      System.out.println();
+
+      actionInput = Blackjack.actionCmdLn.getUserInput(scanner);
 
       switch (actionInput) {
         case 0: //Hit another card
@@ -88,10 +88,12 @@ public class Blackjack {
           System.out.println("ERROR: Invalid Action Code");
           System.out.close();
       }
+
     } while(actionInput != 1 && busted == false);
 
     //Display results
     if (busted) {
+      System.out.println();
       displayLoss("Player's bust.");
       return -bet;
     }
@@ -107,6 +109,7 @@ public class Blackjack {
     }
 
     if (dealerHand.getHandValue() > 21) {
+      System.out.println();
       displayWin("Dealer busts.");
       return Blackjack.winnings(bet);
     }
@@ -128,6 +131,9 @@ public class Blackjack {
 
     System.out.println("Player's hand value: " + playerHandValue);
     System.out.println("Dealer's hand value: " + dealerHandValue);
+
+    Input.waitForEnter(scanner);
+
     if (playerHandValue > dealerHandValue) {
       displayWin("Player has higher value.");
       return Blackjack.winnings(bet);
@@ -135,7 +141,6 @@ public class Blackjack {
       displayLoss("Dealer has higher value.");
       return -bet;
     } else {
-      System.out.println();
       System.out.println("Draw.");
       return 0.0;
     }
