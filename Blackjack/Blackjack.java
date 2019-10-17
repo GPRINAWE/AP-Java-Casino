@@ -57,7 +57,7 @@ public class Blackjack {
   }
 
   public double play(double bet) {
-    System.out.println("Dealer cards: [" + dealerHand.getCard(0) + ",??]");
+    System.out.println("Dealer cards: [" + dealerHand.getCard(0) + ", ??]");
     System.out.println("Player cards: " + playerHand.toString());
 
     if (playerHand.getHandValue() == 21) {
