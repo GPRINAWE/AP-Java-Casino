@@ -1,4 +1,4 @@
-class Card {
+class Card implements Comparable {
   private int suit;
   private int value;
 
@@ -13,6 +13,15 @@ class Card {
 
   public int getValue() {
     return value;
+  }
+
+  public int compareTo(Object obj) {
+    Card card = (Card)obj;
+    if (suit != card.getSuit()) {
+      return suit-card.getSuit();
+    } else {
+      return value-card.getValue();
+    }
   }
 
   public String valueStr() {
