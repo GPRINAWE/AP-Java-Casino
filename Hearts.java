@@ -33,6 +33,8 @@ public class Hearts {
 
   public double play(double bet) {
     System.out.println("Your hand: " + playerHand.toString());
+    playerHand.sort();
+    System.out.println("Sorted: " + playerHand.toString());
     return 0.0;
   }
 }
