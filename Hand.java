@@ -23,6 +23,16 @@ public class Hand {
     return cards;
   }
 
+  public ArrayList getSuit(int suit) {
+    ArrayList result = new ArrayList();
+    for (Card card : cards) {
+      if (card.suit = suit) {
+        result.add(card);
+      }
+    }
+    return result;
+  }
+
   public void addCard(Card cardToAdd) {
     cards.add(cardToAdd);
   }
