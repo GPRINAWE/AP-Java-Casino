@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Hand {
-  private ArrayList cards;
+  private ArrayList<Card> cards;
   private String gameType;
 
   public Hand(String type) {
@@ -15,24 +15,6 @@ public class Hand {
     gameType = type.toLowerCase();
   }
 
-  public Card getCard(int index) {
-    return (Card)cards.get(index);
-  }
-
-  public ArrayList getCards() {
-    return cards;
-  }
-
-  public ArrayList getSuit(int suit) {
-    ArrayList result = new ArrayList();
-    for (Card card : cards) {
-      if (card.suit = suit) {
-        result.add(card);
-      }
-    }
-    return result;
-  }
-
   public void addCard(Card cardToAdd) {
     cards.add(cardToAdd);
   }
@@ -43,6 +25,55 @@ public class Hand {
 
   public void sort() {
     Collections.sort(cards);
+  }
+
+  public ArrayList<Card> getCards() {
+    return cards;
+  }
+
+  public Card getCard(int index) {
+    return cards.get(index);
+  }
+
+  public Card removeCard(int index) {
+    Card card = cards.get(index);
+    cards.remove(index);
+    return card;
+  }
+
+  public int findCard(int suit, int value) {
+    for (int i = 0; i < cards.size(); i++) {
+      Card card = cards.get(i);
+      if (card.suit == suit && card.value == value) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  public Card playCard(int suit, int value) {
+    int index = findCard(suit, value)
+    return removeCard(index);
+  }
+
+  public ArrayList<Card> getCardsFromSuit(int suit) {
+    ArrayList result = new ArrayList();
+    for (Card card : cards) {
+      if (card.suit = suit) {
+        result.add(card);
+      }
+    }
+    return result;
+  }
+
+  public ArrayList<Card> getCardsFromValue(int value) {
+    ArrayList result = new ArrayList();
+    for (Card card : cards) {
+      if (card.value = value) {
+        result.add(card);
+      }
+    }
+    return result;
   }
 
   public int getHandValue() {
@@ -64,7 +95,7 @@ public class Hand {
         //Add ace values depending of hand value
         int acesLeft = aceCount;
         for (int i = 0; i < aceCount; i++) {
-          if (totalVal + acesLeft * 11 <= 21) {
+          if (totalVal + acesLeft * pipValMap[0] <= 21) {
             totalVal += pipValMap[0];
           } else {
             totalVal += 1;
