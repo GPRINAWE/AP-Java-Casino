@@ -1,9 +1,14 @@
 import java.util.Scanner;
 
 public class Hearts {
-  private static CommandLine actionCmdLn = new CommandLine(
-    "Action (): ",
-    new String[] {""}
+  private static CommandLine suitCmdLn = new CommandLine(
+    "Enter card suit: ",
+    new String[] {"","clubs","spades","hearts","diamonds"}
+  );
+
+  private static CommandLine valueCmdLn = new CommandLine(
+    "Enter card value: ",
+    new String[] {"","ace","two","three","four","five","six","seven","eight","nine","ten","jack","queen","king"}
   );
 
   private Scanner scanner;
@@ -32,9 +37,16 @@ public class Hearts {
   }
 
   public double play(double bet) {
-    System.out.println("Your hand: " + playerHand.toString());
     playerHand.sort();
-    System.out.println("Sorted: " + playerHand.toString());
+    System.out.println("Your hand: " + playerHand.toString());
+
+    int suit = Hearts.suitCmdLn.getUserInput(scanner);
+    int value = Hearts.valueCmdLn.getUserInput(scanner);
+
+    System.out.println("suit: " + suit + "\nvalue: " + value);
+    int index = playerHand.findCard(suit, value);
+    Card card = playerHand.getCard(index);
+    System.out.println(card.toString());
     return 0.0;
   }
 }
