@@ -17,6 +17,9 @@ public class Hearts {
   private Hand playerHand;
   private Hand[] computerHands = new Hand[3];
 
+  //Hearts can only lead a trick if a heart is discarded
+  private boolean heartsCanLead = false;
+
   public Hearts(Scanner s) {
     scanner = s;
 
@@ -36,17 +39,38 @@ public class Hearts {
     }
   }
 
+  private Card promptPlayerCard() {
+    int value = Hearts.valueCmdLn.getUserInput(scanner);
+    int suit = Hearts.suitCmdLn.getUserInput(scanner);
+    return playerHand.playCard(suit, value);
+  }
+
   public double play(double bet) {
+    Hand trick = new Hand("hearts");
+
     playerHand.sort();
     System.out.println("Your hand: " + playerHand.toString());
 
-    int suit = Hearts.suitCmdLn.getUserInput(scanner);
-    int value = Hearts.valueCmdLn.getUserInput(scanner);
+    Card card;
+    boolean validPlay = false;
+    do {
 
-    System.out.println("suit: " + suit + "\nvalue: " + value);
-    int index = playerHand.findCard(suit, value);
-    Card card = playerHand.getCard(index);
-    System.out.println(card.toString());
+      System.out.println();
+      card = promptPlayerCard();
+
+      if (card == null) {
+        System.out.println("Card not found.");
+      } else if (card.getSuit() == 3 && trick.getCards().size() == 0 && !heartsCanLead) {
+        System.out.println("Hearts cannot lead until a point card is discarded.");
+      } else {
+        validPlay = true;
+      }
+    } while(!validPlay);
+
+    trick.addCard(card);
+
+    System.out.println("Trick: " + trick.toString());
+    System.out.println("Your hand: " + playerHand.toString());
     return 0.0;
   }
 }
