@@ -44,7 +44,7 @@ public class Hand {
   public int findCard(int suit, int value) {
     for (int i = 0; i < cards.size(); i++) {
       Card card = cards.get(i);
-      if (card.suit == suit && card.value == value) {
+      if (card.getSuit() == suit && card.getValue() == value) {
         return i;
       }
     }
@@ -52,14 +52,14 @@ public class Hand {
   }
 
   public Card playCard(int suit, int value) {
-    int index = findCard(suit, value)
+    int index = findCard(suit, value);
     return removeCard(index);
   }
 
   public ArrayList<Card> getCardsFromSuit(int suit) {
     ArrayList result = new ArrayList();
     for (Card card : cards) {
-      if (card.suit = suit) {
+      if (card.getSuit() == suit) {
         result.add(card);
       }
     }
@@ -69,7 +69,7 @@ public class Hand {
   public ArrayList<Card> getCardsFromValue(int value) {
     ArrayList result = new ArrayList();
     for (Card card : cards) {
-      if (card.value = value) {
+      if (card.getValue() == value) {
         result.add(card);
       }
     }
