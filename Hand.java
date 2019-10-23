@@ -10,7 +10,7 @@ public class Hand {
     gameType = type.toLowerCase();
   }
 
-  public Hand(String type, ArrayList c) {
+  public Hand(String type, ArrayList<Card> c) {
     cards = new ArrayList(c);
     gameType = type.toLowerCase();
   }
@@ -74,6 +74,36 @@ public class Hand {
       }
     }
     return result;
+  }
+
+  public int getMinValue(int minimum) {
+    int minVal;
+    for (Card card : cards) {
+      if (minVal == undefined || card.getValue() < minVal) {
+        if (card.getValue() >= minimum) {
+          minVal = card.getValue();
+        }
+      }
+    }
+    if (minVal == undefined) {
+      return null;
+    }
+    return maxVal;
+  }
+
+  public int getMaxValue(int maximum) {
+    int maxVal;
+    for (Card card : cards) {
+      if (maxVal == undefined || card.getValue() > maxVal) {
+        if (card.getValue() <= maximum) {
+          maxVal = card.getValue();
+        }
+      }
+    }
+    if (maxVal == undefined) {
+      return null;
+    }
+    return maxVal;
   }
 
   public int getHandValue() {
