@@ -72,14 +72,23 @@ public class Hearts {
         if (hand.findCard(2,12) != -1) {
           //play queen of spades at first opportunity
           return hand.playCard(2,12);
+        } else if (hand.fireCard(3,1) != -1) {
+          //check for ace of hearts
+          return hand.playCard(3,1);
         } else if (hand.getCardsFromSuit(3).size() > 0) {
           //play highest heart by default
           Hand handWithHearts = new Hand("hearts",hand.getCardsFromSuit(3));
           return hand.playCard(3,handWithHearts.getMaxValue(13));
         } else {
           //othewise play highest general card
-          Hand handWithMax = new Hand("hearts",getCardsFromValue(hand.getMaxValue(13)));
-          return hand.playCard(handWithMax.getCard(0).getSuit(),hand.getMaxValue(13));
+          if (hand.getCardsFromValue(1).size() > 0) {
+            //check for ace
+            Hand handWithAce = new Hand("hearts",getCardsFromValue(1));
+            return hand.playCard(handWithAce.getCard(0).getSuit(),1);
+          } else {
+            Hand handWithMax = new Hand("hearts",getCardsFromValue(hand.getMaxValue(13)));
+            return hand.playCard(handWithMax.getCard(0).getSuit(),hand.getMaxValue(13));
+          }
         }
       }
     }
