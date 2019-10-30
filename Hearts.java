@@ -49,6 +49,7 @@ public class Hearts {
   private Card computerPlayCard(Hand hand) {
     if (trick.getCards().size() == 0) {
       int handMin = hand.getMinValue(2);
+      Hand handWithMin = new Hand("hearts",hand.getCardsFromValue(handMin))
     } else {
       int trickSuit = trick.getCards().get(0).getSuit();
       Hand trickWithSuit = new Hand("hearts",trick.getCardsFromSuit(trickSuit));
@@ -83,10 +84,10 @@ public class Hearts {
           //othewise play highest general card
           if (hand.getCardsFromValue(1).size() > 0) {
             //check for ace
-            Hand handWithAce = new Hand("hearts",getCardsFromValue(1));
+            Hand handWithAce = new Hand("hearts",hand.getCardsFromValue(1));
             return hand.playCard(handWithAce.getCard(0).getSuit(),1);
           } else {
-            Hand handWithMax = new Hand("hearts",getCardsFromValue(hand.getMaxValue(13)));
+            Hand handWithMax = new Hand("hearts",hand.getCardsFromValue(hand.getMaxValue(13)));
             return hand.playCard(handWithMax.getCard(0).getSuit(),hand.getMaxValue(13));
           }
         }
