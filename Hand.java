@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -53,6 +54,9 @@ public class Hand {
 
   public Card playCard(int suit, int value) {
     int index = findCard(suit, value);
+    if (index == -1) {
+      return null;
+    }
     return removeCard(index);
   }
 
@@ -76,32 +80,26 @@ public class Hand {
     return result;
   }
 
-  public int getMinValue(int minimum) {
-    int minVal;
+  public Integer getMinValue(int minimum) {
+    Integer minVal = null;
     for (Card card : cards) {
-      if (minVal == undefined || card.getValue() < minVal) {
+      if (Objects.isNull(minVal) || card.getValue() < minVal) {
         if (card.getValue() >= minimum) {
           minVal = card.getValue();
         }
       }
     }
-    if (minVal == undefined) {
-      return null;
-    }
-    return maxVal;
+    return minVal;
   }
 
-  public int getMaxValue(int maximum) {
-    int maxVal;
+  public Integer getMaxValue(int maximum) {
+    Integer maxVal = null;
     for (Card card : cards) {
-      if (maxVal == undefined || card.getValue() > maxVal) {
+      if (Objects.isNull(maxVal) || card.getValue() > maxVal) {
         if (card.getValue() <= maximum) {
           maxVal = card.getValue();
         }
       }
-    }
-    if (maxVal == undefined) {
-      return null;
     }
     return maxVal;
   }
