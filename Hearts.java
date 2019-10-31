@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Hearts {
@@ -41,15 +42,39 @@ public class Hearts {
   }
 
   private Card promptPlayerCard() {
-    int value = Hearts.valueCmdLn.getUserInput(scanner);
-    int suit = Hearts.suitCmdLn.getUserInput(scanner);
-    return playerHand.playCard(suit, value);
+    System.out.println();
+
+    playerHand.sort();
+    System.out.println("Your hand: " + playerHand.toString());
+
+    Card card;
+    boolean validPlay = false;
+    do {
+
+      System.out.println();
+      int value = Hearts.valueCmdLn.getUserInput(scanner);
+      int suit = Hearts.suitCmdLn.getUserInput(scanner);
+      card = playerHand.playCard(suit, value);
+
+      if (card == null) {
+        System.out.println("Card not found.");
+      } else if (!heartsCanLead && card.getSuit() == 3 && trick.getCards().size() == 0) {
+        System.out.println("Hearts cannot lead until a point card is discarded.");
+      } else {
+        validPlay = true;
+      }
+    } while(!validPlay);
+
+    return card;
   }
 
   private Card computerPlayCard(Hand hand) {
-    if (trick.getCards().size() == 0) {
+    if (hand.getCards().size() == 0) {
+      return null;
+    } else if (trick.getCards().size() == 0) {
       int handMin = hand.getMinValue(2);
-      Hand handWithMin = new Hand("hearts",hand.getCardsFromValue(handMin))
+      Hand handWithMin = new Hand("hearts",hand.getCardsFromValue(handMin));
+      return hand.playCard(handWithMin.getCard(0).getSuit(),handMin);
     } else {
       int trickSuit = trick.getCards().get(0).getSuit();
       Hand trickWithSuit = new Hand("hearts",trick.getCardsFromSuit(trickSuit));
@@ -62,18 +87,19 @@ public class Hearts {
         } else {
           //if no ace, try to play highest value you can lose on
           int trickMax = trickWithSuit.getMaxValue(13);
-          Card card = hand.playCard(trickSuit,handWithSuit.getMaxValue(trickMax-1));
-          if (card == null) {
-            //otherwise accept fate and get rid of highest value
-            card = hand.playCard(trickSuit,handWithSuit.getMaxValue(13));
+          Integer playMax = handWithSuit.getMaxValue(trickMax-1);
+
+          //otherwise accept fate and get rid of highest value
+          if (Objects.isNull(playMax)) {
+            playMax = handWithSuit.getMaxValue(13);
           }
-          return card;
+          return hand.playCard(trickSuit,playMax);
         }
       } else { //If hand doesn't have cards in trick's suit
         if (hand.findCard(2,12) != -1) {
           //play queen of spades at first opportunity
           return hand.playCard(2,12);
-        } else if (hand.fireCard(3,1) != -1) {
+        } else if (hand.findCard(3,1) != -1) {
           //check for ace of hearts
           return hand.playCard(3,1);
         } else if (hand.getCardsFromSuit(3).size() > 0) {
@@ -98,30 +124,52 @@ public class Hearts {
   public double play(double bet) {
     trick = new Hand("hearts");
 
-    playerHand.sort();
-    System.out.println("Your hand: " + playerHand.toString());
-
-    Card card;
-    boolean validPlay = false;
-    do {
-
-      System.out.println();
-      card = promptPlayerCard();
-
-      if (card == null) {
-        System.out.println("Card not found.");
-      } else if (!heartsCanLead && card.getSuit() == 3 && trick.getCards().size() == 0) {
-        System.out.println("Hearts cannot lead until a point card is discarded.");
-      } else {
-        validPlay = true;
+    //computers have same turn number as their hand index
+    //player's turn number is -1
+    //Whoever has 2 of clubs starts the game
+    Integer turn = null;
+    if (playerHand.findCard(1,2) != -1) {
+      turn = -1;
+    } else {
+      for (int i = 0; i < computerHands.length; i++) {
+        if (computerHands[i].findCard(1,2) != -1) {
+          turn = i;
+        }
       }
-    } while(!validPlay);
+    }
 
-    System.out.println();
-
-    trick.addCard(card);
+    if (turn == -1) {
+      System.out.println("Player's has 2 of clubs.");
+      trick.addCard(playerHand.playCard(1,2));
+    } else {
+      System.out.println("Computer #" + (turn+1) + " has 2 of clubs.");
+      trick.addCard(computerHands[turn].playCard(1,2));
+    }
     System.out.println("Trick: " + trick.toString());
-    System.out.println("Your hand: " + playerHand.toString());
+    Input.waitForEnter(scanner);
+
+    for (int round = 0; round < 13; round++) {
+      while (trick.getCards().size() < 1 + computerHands.length) {
+        turn++;
+        if (turn > computerHands.length-1) {
+          turn = -1;
+        }
+
+        if (turn == -1) {
+          Card card = promptPlayerCard();
+          trick.addCard(card);
+        } else {
+          Hand hand = computerHands[turn];
+          //System.out.println("Comp"+(turn+1)+": " + hand.toString());
+          trick.addCard(computerPlayCard(hand));
+        }
+        System.out.println("Trick: " + trick.toString());
+        Input.waitForEnter(scanner);
+      }
+      trick = new Hand("hearts");
+      System.out.println("-");
+      System.out.println("New Round.");
+    }
     return 0.0;
   }
 }
