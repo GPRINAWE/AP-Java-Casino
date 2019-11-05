@@ -34,7 +34,9 @@ public class Hearts {
 
   public Hearts(Scanner s) {
     scanner = s;
+  }
 
+  private void setup() {
     deck = new Deck();
     deck.shuffle();
 
@@ -49,6 +51,8 @@ public class Hearts {
         compHand.addCard(deck.draw());
       }
     }
+
+    trick = new Hand("hearts");
   }
 
   private Card promptPlayerCard() {
@@ -183,116 +187,135 @@ public class Hearts {
   }
 
   public double play(double bet) {
-    trick = new Hand("hearts");
+    boolean gameEnd = false;
 
-    //computers have same turn number as their hand index
-    //player's turn number is -1
-    //Whoever has 2 of clubs starts the game
-    Integer turn = null;
-    if (playerHand.findCard(1,2) != -1) {
-      turn = -1;
-    } else {
-      for (int i = 0; i < computerHands.length; i++) {
-        if (computerHands[i].findCard(1,2) != -1) {
-          turn = i;
-        }
-      }
-    }
+    while (!gameEnd) {
 
-    if (turn == -1) {
-      System.out.println("Player has 2 of clubs.");
-      trick.addCard(playerHand.playCard(1,2));
-      playerLastPlay = new Card(1,2);
-    } else {
-      System.out.println("Computer #" + (turn+1) + " has 2 of clubs.");
-      trick.addCard(computerHands[turn].playCard(1,2));
-      computerLastPlays[turn] = new Card(1,2);
-    }
-    System.out.println("Trick: " + trick.toString());
-    System.out.println();
+      setup();
 
-    turn++;
-    if (turn > computerHands.length-1) {
-      turn = -1;
-    }
-
-    for (int round = 1; round <= 13; round++) {
-      while (trick.getCards().size() < 1 + computers) {
-        Card card;
-        if (turn == -1) {
-          System.out.print("Your play...");
-          Input.waitForEnter(scanner);
-          card = promptPlayerCard();
-          playerLastPlay = card;
-        } else {
-          System.out.print("Comp"+(turn+1)+"'s play...");
-          Input.waitForEnter(scanner);
-          //System.out.println(computerHands[turn].toString());
-
-          Hand hand = computerHands[turn];
-          card = computerPlayCard(hand);
-          computerLastPlays[turn] = card;
-        }
-
-        if (card.getSuit() == 3 || (card.getSuit() == 2 && card.getValue() == 12 )) {
-            heartsCanLead = true;
-        }
-        trick.addCard(card);
-
-        System.out.println(trick.toString());
-        System.out.println();
-
-        turn++;
-        if (turn > computerHands.length-1) {
-          turn = -1;
-        }
-      }
-
-      int points = 0;
-      Card winCard = null;
-      for (Card card : trick.getCards()) {
-        if (card.getSuit() == 3) {
-          points += 1;
-        } else if (card.getSuit() == 2 && card.getValue() == 12) {
-          points += 13;
-        }
-        if (Objects.isNull(winCard)) {
-          winCard = card;
-        } else if (card.getSuit() == trick.getCard(0).getSuit() && winCard.getValue() != 1){
-          if (winCard.compareTo(card) < 0 || card.getValue() == 1) {
-            winCard = card;
-          }
-        }
-      }
-
-      if (winCard.compareTo(playerLastPlay) == 0) {
+      //computers have same turn number as their hand index
+      //player's turn number is -1
+      //Whoever has 2 of clubs starts the game
+      Integer turn = null;
+      if (playerHand.findCard(1,2) != -1) {
         turn = -1;
-        playerPoints += points;
-        System.out.print("Player won.");
       } else {
-        for (int i = 0; i < computerLastPlays.length; i++) {
-          if (winCard.compareTo(computerLastPlays[i]) == 0) {
+        for (int i = 0; i < computerHands.length; i++) {
+          if (computerHands[i].findCard(1,2) != -1) {
             turn = i;
-            computerPoints[turn] += points;
-            System.out.print("Comp"+(turn+1)+" won.");
           }
         }
       }
-      System.out.println(" (+"+points+"pt)");
 
-      Input.waitForEnter(scanner);
+      if (turn == -1) {
+        System.out.println("Player has 2 of clubs.");
+        trick.addCard(playerHand.playCard(1,2));
+        playerLastPlay = new Card(1,2);
+      } else {
+        System.out.println("Computer #" + (turn+1) + " has 2 of clubs.");
+        trick.addCard(computerHands[turn].playCard(1,2));
+        computerLastPlays[turn] = new Card(1,2);
+      }
+      System.out.println("Trick: " + trick.toString());
+      System.out.println();
 
-      System.out.println("Player - " + playerPoints);
-      for (int i = 0; i < computerPoints.length; i++) {
-        System.out.println("Comp"+(i+1)+"  - " + computerPoints[i]);
+      turn++;
+      if (turn > computerHands.length-1) {
+        turn = -1;
       }
 
-      trick = new Hand("hearts");
+      for (int round = 1; round <= 13; round++) {
+        while (trick.getCards().size() < 1 + computers) {
+          Card card;
+          if (turn == -1) {
+            System.out.print("Your play...");
+            Input.waitForEnter(scanner);
+            card = promptPlayerCard();
+            playerLastPlay = card;
+          } else {
+            System.out.print("Comp"+(turn+1)+"'s play...");
+            Input.waitForEnter(scanner);
+            //System.out.println(computerHands[turn].toString());
 
-      System.out.println("-");
+            Hand hand = computerHands[turn];
+            card = computerPlayCard(hand);
+            computerLastPlays[turn] = card;
+          }
 
-      if (round != 13) {
-        System.out.println("New round.");
+          if (card.getSuit() == 3 || (card.getSuit() == 2 && card.getValue() == 12 )) {
+              heartsCanLead = true;
+          }
+          trick.addCard(card);
+
+          System.out.println(trick.toString());
+          System.out.println();
+
+          turn++;
+          if (turn > computerHands.length-1) {
+            turn = -1;
+          }
+        }
+
+        int points = 0;
+        Card winCard = null;
+        for (Card card : trick.getCards()) {
+          if (card.getSuit() == 3) {
+            points += 1;
+          } else if (card.getSuit() == 2 && card.getValue() == 12) {
+            points += 13;
+          }
+          if (Objects.isNull(winCard)) {
+            winCard = card;
+          } else if (card.getSuit() == trick.getCard(0).getSuit() && winCard.getValue() != 1){
+            if (winCard.compareTo(card) < 0 || card.getValue() == 1) {
+              winCard = card;
+            }
+          }
+        }
+
+        if (winCard.compareTo(playerLastPlay) == 0) {
+          turn = -1;
+          playerPoints += points;
+          System.out.print("Player won.");
+        } else {
+          for (int i = 0; i < computerLastPlays.length; i++) {
+            if (winCard.compareTo(computerLastPlays[i]) == 0) {
+              turn = i;
+              computerPoints[turn] += points;
+              System.out.print("Comp"+(turn+1)+" won.");
+            }
+          }
+        }
+        System.out.println(" (+"+points+"pt)");
+
+        Input.waitForEnter(scanner);
+
+        System.out.println("Player - " + playerPoints);
+        for (int i = 0; i < computerPoints.length; i++) {
+          System.out.println("Comp"+(i+1)+"  - " + computerPoints[i]);
+        }
+
+        trick = new Hand("hearts");
+
+        System.out.println("-");
+
+        if (round != 13) {
+          System.out.println("New round.");
+          Input.waitForEnter(scanner);
+        }
+      }
+
+      int maxPoints = playerPoints;
+      for (int points : computerPoints) {
+        if (points > maxPoints) {
+          maxPoints = points;
+        }
+      }
+      if (maxPoints >= Hearts.pointThreshold) {
+        gameEnd = true;
+        System.out.println("Over " + Hearts.pointThreshold + " points. Game end.");
+      } else {
+        System.out.println("New deck.");
         Input.waitForEnter(scanner);
       }
     }
