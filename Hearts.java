@@ -316,6 +316,7 @@ public class Hearts {
         System.out.println("Over " + Hearts.pointThreshold + " points. Game end.");
       } else {
         System.out.println("New deck.");
+        heartsCanLead = false;
         Input.waitForEnter(scanner);
       }
     }
